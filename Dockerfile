@@ -1,4 +1,4 @@
-FROM python:3.10.11
+FROM python:3.12.2
 COPY requirements.txt /tmp/requirements.txt
 # RUN pip install --upgrade pip
 RUN pip install -r /tmp/requirements.txt

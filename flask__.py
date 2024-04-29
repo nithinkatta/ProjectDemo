@@ -25,7 +25,7 @@ model = genai.GenerativeModel('gemini-pro')
 
 #opencv
 cap = cv2.VideoCapture(0)
-detector = HandDetector(maxHands=2)
+# detector = HandDetector(maxHands=2)
 
 # loaded_model = tf.keras.models.load_model('model.h5')
 classifier = Classifier("Model/Model_5/keras_model.h5", "Model/Model_5/labels.txt")
@@ -60,14 +60,14 @@ def generate_frames():
         ## read the camera frame
         success,img=cap.read()
 
-        imgOutput = img.copy()
-        hands,img = detector.findHands(img,False)
+        # imgOutput = img.copy()
+        # hands,img = detector.findHands(img,False)
 
-        if hands:
-            flag = True 
+        # if hands:
+            # flag = True 
 
-            hand = hands[0]
-            x, y, w, h = hand['bbox']
+            # hand = hands[0]
+            # x, y, w, h = hand['bbox']
             
             # imgWhite = np.ones((imgSize, imgSize, 3), np.uint8) * 255
             # imgCrop = img[y-offset:y+h+offset, x-offset:x+w+offset]
@@ -75,42 +75,42 @@ def generate_frames():
 
             # aspectRatio = h/w
 
-            prediction,index = classifier.getPrediction(img,draw=False)
+        prediction,index = classifier.getPrediction(img,draw=False)
 
-            if labels[-1] != labels[index]:
-                Input.append(labels[index])
+        if labels[-1] != labels[index]:
+            Input.append(labels[index])
             
             # cv2.rectangle(img, (x - offset, y - offset - 70), (x - offset + 400, y - offset + 60 - 50), (0, 255, 0),
             #           cv2.FILLED)            
-            cv2.putText(img, labels[index], (x, y - 30), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)
+            # cv2.putText(img, labels[index], (x, y - 30), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)
             # cv2.rectangle(img, (x - offset, y - offset), (x + w + offset, y + h + offset), (0, 255, 0), 4)
-        else:
-            if Input!=[]:
-                if flag:
-                    s = ""
-                    for i in set(Input):
-                        if i!="Hold":
-                            s+=i+" "
-                    print(s) 
-                    if s!=" ":
-                        response = model.generate_content("Correct the sentence without explanation : "+s)
-                        print(response.text)
-                    s = response.text
-                    flag = False 
+        
+        if Input!=[]:
+            if flag:
+                s = ""
+                for i in set(Input):
+                    if i!="Hold":
+                        s+=i+" "
+                print(s) 
+                if s!=" ":
+                    response = model.generate_content("Correct the sentence without explanation : "+s)
+                    print(response.text)
+                s = response.text
+                flag = False 
 
-                    Input = []
-                    prev = s 
+                Input = []
+                prev = s 
 
-                    # tts = gTTS(text=s,lang='en')
-                    # audio_buffer = BytesIO()
-                    # tts.write_to_fp(audio_buffer)
-                    # audio_buffer.seek(0)
-                    # pygame.mixer.init()
-                    # pygame.mixer.music.load(audio_buffer)
-                    # pygame.mixer.music.play()
+                # tts = gTTS(text=s,lang='en')
+                # audio_buffer = BytesIO()
+                # tts.write_to_fp(audio_buffer)
+                # audio_buffer.seek(0)
+                # pygame.mixer.init()
+                # pygame.mixer.music.load(audio_buffer)
+                # pygame.mixer.music.play()
 
-                    # while pygame.mixer.music.get_busy():
-                    #     time.sleep(1)
+                # while pygame.mixer.music.get_busy():
+                #     time.sleep(1)
 
 
                     
